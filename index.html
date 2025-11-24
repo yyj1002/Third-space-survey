@@ -15,27 +15,37 @@
   h1 {
     text-align: center;
     color: #6b4f3f;
+    margin-bottom: 30px;
   }
   h2 {
     color: #6b4f3f;
     font-size: 18px;
+    margin-bottom: 10px;
   }
   .question {
     margin-bottom: 30px;
+    padding: 15px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   }
-  .options.priority label {
+  .question p {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .options.priority label, .options.checkbox label {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: #faf5f1;
     border: 1px solid #d6c6b9;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: 6px;
     margin: 5px 0;
     cursor: pointer;
     transition: background 0.2s;
   }
-  .options.priority label:hover {
-    background: #e5d8cf;
+  .options.priority label:hover, .options.checkbox label:hover {
+    background: #f0e4db;
   }
   .options.priority .prio {
     margin-left: auto;
@@ -49,242 +59,276 @@
     background-color: #c9b4a3;
     border-radius: 50%;
   }
-  input[type="number"], select {
+  input[type="text"], input[type="number"], select, textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     border-radius: 6px;
     border: 1px solid #d6c6b9;
     background: #fff;
+    box-sizing: border-box;
+  }
+  input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+  }
+  textarea {
+    resize: vertical;
   }
   button {
     background-color: #8b5e3c;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 6px;
     cursor: pointer;
     margin-top: 20px;
+    font-size: 16px;
   }
   button:hover {
     background-color: #6b4f3f;
   }
+  ul.multi-sortable {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.multi-sortable li {
+    background-color: #faf5f1;
+    border: 1px solid #d6c6b9;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin: 5px 0;
+    cursor: grab;
+  }
 </style>
 </head>
 <body>
-
 <h1>Third Space Survey | 第三空间调研</h1>
 
-<!-- 第一部分 用户画像 -->
-<div class="question">
-  <h2>1. Age / 年龄</h2>
-  <input type="number" min="0" placeholder="Enter your age | 输入年龄">
-</div>
+<form id="surveyForm">
 
-<div class="question">
-  <h2>2. Current living situation / 当前生活状况</h2>
-  <select>
-    <option>Student short-term rental | 学生短租</option>
-    <option>Traveling / digital nomad | 旅居/数字游民</option>
-    <option>Business trip | 出差</option>
-    <option>Long-term rent | 定居租房</option>
-    <option>Long-term own house | 定居买房</option>
-  </select>
-</div>
-
-<div class="question">
-  <h2>3. Duration in current city / 当前城市生活时长</h2>
-  <select>
-    <option>Less than 1 year | 不到1年</option>
-    <option>1-3 years | 1-3年</option>
-    <option>3-5 years | 3-5年</option>
-    <option>More than 5 years | 5年以上</option>
-  </select>
-</div>
-
-<div class="question">
-  <h2>4. Days per week you work in third spaces / 每周在第三空间办公天数</h2>
-  <select>
-    <option>0-1</option>
-    <option>2-3</option>
-    <option>4-5</option>
-    <option>6-7</option>
-  </select>
-</div>
-
-<div class="question">
-  <h2>5. Preference for working in public spaces / 是否倾向在公共空间工作学习</h2>
-  <select>
-    <option>Strongly Disagree | 非常不倾向</option>
-    <option>Disagree | 不倾向</option>
-    <option>Neutral | 一般</option>
-    <option>Agree | 倾向</option>
-    <option>Strongly Agree | 非常倾向</option>
-  </select>
-</div>
-
-<!-- 第二部分 城市类型 -->
-<div class="question">
-  <h2>6. City Name / 城市名称</h2>
-  <input type="text" placeholder="Enter city name | 输入城市">
-</div>
-
-<div class="question">
-  <h2>7. Nearby facilities within 10 mins / 常滞留地区10分钟内设施</h2>
-  <div class="options priority">
-    <label data-value="cafe"><div class="icon"></div>Café | 咖啡店 <span class="prio"></span></label>
-    <label data-value="convenience"><div class="icon"></div>Convenience store | 连锁便利店 <span class="prio"></span></label>
-    <label data-value="shopping"><div class="icon"></div>Shopping mall | 商圈 <span class="prio"></span></label>
+  <div class="question">
+    <p>1. Age | 年龄</p>
+    <input type="text" name="age" placeholder="e.g. 28">
   </div>
-</div>
 
-<!-- 第三部分 决策习惯 -->
-<div class="question">
-  <h2>8. How do you usually find a temporary workspace? / 外出时如何寻找临时办公地点</h2>
-  <div class="options priority">
-    <label data-value="nearest"><div class="icon"></div>Nearest available café | 最近有空位随便坐 <span class="prio"></span></label>
-    <label data-value="review"><div class="icon"></div>Check reviews & vibe | 看评论选合适环境 <span class="prio"></span></label>
-    <label data-value="chain"><div class="icon"></div>Known chain café | 熟悉连锁找最近可用 <span class="prio"></span></label>
-    <label data-value="quiet_space"><div class="icon"></div>Special quiet spaces | 专门安静空间 <span class="prio"></span></label>
+  <div class="question">
+    <p>2. City name that you currently live in | 当前生活的城市名称</p>
+    <input type="text" name="city_name" placeholder="e.g. Tokyo">
   </div>
-</div>
 
-<div class="question">
-  <h2>9. Future short-term workspace planning / 未来几天有临时办公需求时</h2>
-  <div class="options priority">
-    <label data-value="nearest"><div class="icon"></div>Nearest available café | 最近有空位随便坐 <span class="prio"></span></label>
-    <label data-value="review"><div class="icon"></div>Check reviews & vibe | 看评论选合适环境 <span class="prio"></span></label>
-    <label data-value="chain"><div class="icon"></div>Known chain café | 熟悉连锁找最近可用 <span class="prio"></span></label>
-    <label data-value="quiet_space"><div class="icon"></div>Special quiet spaces | 专门安静空间 <span class="prio"></span></label>
+  <div class="question">
+    <p>3. Time spent in this city | 在当前城市生活时间</p>
+    <select name="living_time">
+      <option value="1年以内">Less than 1 year | 1年以内</option>
+      <option value="1-3年">1–3 years | 1-3年</option>
+      <option value="3-5年">3–5 years | 3-5年</option>
+      <option value="5年以上">More than 5 years | 5年以上</option>
+    </select>
   </div>
-</div>
-
-<div class="question">
-  <h2>10. Expected high-quality workspace duration / 期望高质量办公时间</h2>
-  <select>
-    <option>Less than 1 hour | 不到1小时</option>
-    <option>1-2 hours | 1-2小时</option>
-    <option>2-4 hours | 2-4小时</option>
-    <option>4+ hours | 4小时以上</option>
-  </select>
-</div>
-
-<div class="question">
-  <h2>11. Tools preference / 工具使用偏好</h2>
-  <div class="options priority">
-    <label data-value="map"><div class="icon"></div>Map | 地图 <span class="prio"></span></label>
-    <label data-value="review"><div class="icon"></div>Review sites | 评论网站 <span class="prio"></span></label>
+  
+  <div class="question">
+    <p>4. Current situation | 当前生活状况</p>
+    <select name="city_status">
+      <option value="学生短租">Student short-term rental | 学生短租</option>
+      <option value="旅居">Traveling/Temporary stay | 旅居</option>
+      <option value="出差">Business trip | 出差</option>
+      <option value="定居租房">Settled renting | 定居租房</option>
+      <option value="定居买房">Settled owning | 定居买房</option>
+    </select>
   </div>
-</div>
 
-<div class="question">
-  <h2>12. Area vs. Exploration preference / 区域熟悉 vs 探索新区域</h2>
-  <select>
-    <option>Prefer familiar area | 偏向熟悉区域</option>
-    <option>Explore new areas | 探索新区域</option>
-  </select>
-</div>
-
-<div class="question">
-  <h2>13. Wait or choose alternative / 喜欢等座还是换其他</h2>
-  <select>
-    <option>Wait for preferred spot | 等候喜欢的座位</option>
-    <option>Choose alternative immediately | 立即选择其他</option>
-  </select>
-</div>
-
-<!-- 第四部分 需求与痛点 -->
-<div class="question">
-  <h2>14. Workspace selection factors / 选择办公地点考虑因素</h2>
-  <div class="options priority">
-    <label data-value="noise"><div class="icon"></div>Noise | 嘈杂度 <span class="prio"></span></label>
-    <label data-value="wifi"><div class="icon"></div>Wi-Fi | 网络质量 <span class="prio"></span></label>
-    <label data-value="power"><div class="icon"></div>Power outlets | 插座完备 <span class="prio"></span></label>
-    <label data-value="space"><div class="icon"></div>Semi-private space | 半独立空间 <span class="prio"></span></label>
-    <label data-value="view"><div class="icon"></div>View & light | 外界视野/光线 <span class="prio"></span></label>
-    <label data-value="decor"><div class="icon"></div>Decor | 室内装潢 <span class="prio"></span></label>
-    <label data-value="activity"><div class="icon"></div>Small events | 小型活动 <span class="prio"></span></label>
+  <div class="question">
+    <p>5. Weekly days working in third space | 每周在第三空间办公天数</p>
+    <select name="weekly_days">
+      <option value="0">0</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5+">5+</option>
+    </select>
   </div>
-</div>
 
-<div class="question">
-  <h2>15. Actual problems encountered / 实际使用过程中遇到的问题</h2>
-  <textarea placeholder="Optional | 非必填" style="width:100%; height:80px;"></textarea>
-</div>
+  <div class="question">
+    <p>6. Preference for working/studying in public spaces | 是否倾向在公共空间学习/办公</p>
+    <input type="range" name="public_space_preference" min="1" max="5" value="3" step="1"
+       oninput="updatePreferenceText(this.value)">
+    <span id="publicPrefValue">Neutral | 一般</span>
 
-<!-- 第五部分 信息获取方式与功能偏好 -->
-<div class="question">
-  <h2>16. Filters preference / 功能偏好</h2>
-  <div class="options priority">
-    <label data-value="area"><div class="icon"></div>Area | 区域位置 <span class="prio"></span></label>
-    <label data-value="facilities"><div class="icon"></div>Facilities | 必要设施 <span class="prio"></span></label>
-    <label data-value="real-time"><div class="icon"></div>Real-time availability | 当前时段空位 <span class="prio"></span></label>
   </div>
-</div>
+  
 
-<div class="question">
-  <h2>17. Exploration mode / 自由探索 vs 排行榜</h2>
-  <select>
-    <option>Free map exploration | 地图自由探索</option>
-    <option>Filtered list / leaderboard | 筛选生成排行榜</option>
-  </select>
-</div>
+  <div class="question">
+    <p>7. Facilities within 10 min walk near your usual area | 常滞留地区步行10分钟可达设施</p>
+    <div class="options checkbox">
+      <label><input type="checkbox" name="facilities" value="coffee"> Coffee shop | 咖啡店</label>
+      <label><input type="checkbox" name="facilities" value="convenience"> Convenience store | 连锁便利店</label>
+      <label><input type="checkbox" name="facilities" value="mall"> Shopping mall | 商圈</label>
+    </div>
+  </div>
 
-<div class="question">
-  <h2>18. Additional info / 希望提供的额外信息</h2>
-  <textarea placeholder="Environment, events, ratings, booking etc. | 环境、活动、评价、预约等" style="width:100%; height:80px;"></textarea>
-</div>
+  <div class="question">
+    <p>8. How do you decide where to work/study if you need a spot right now? (Drag to rank) | 现在立刻找临时学习/办公点时的偏好（拖拽排序）</p>
+    <ul class="multi-sortable" id="decisionNow">
+      <li>Nearest available coffee shop | 最近有空位的咖啡店随便坐坐</li>
+      <li>Check platforms with reviews | 看评论平台挑合适的店</li>
+      <li>Familiar chain, find available seat | 熟悉连锁咖啡店找有位置的</li>
+      <li>Look for dedicated quiet spaces | 寻找专门自习/办公的安静空间</li>
+    </ul>
+  </div>
 
-<button onclick="exportCSV()">Export CSV | 导出 CSV</button>
+  <div class="question">
+    <p>9. How do you plan to find workspace if you have plans next few days? (Drag to rank) | 未来几天有学习/办公需求时的选择偏好（拖拽排序）</p>
+    <ul class="multi-sortable" id="decisionFuture">
+      <li>Nearest available coffee shop | 最近有空位的咖啡店随便坐坐</li>
+      <li>Check platforms with reviews | 看评论平台挑合适的店</li>
+      <li>Familiar chain, find available seat | 熟悉连锁咖啡店找有位置的</li>
+      <li>Look for dedicated quiet spaces | 寻找专门自习/办公的安静空间</li>
+    </ul>
+  </div>
 
+  <div class="question">
+    <p>10. Expected high-quality work duration each time | 每次利用空间时需要的高质量办公时间</p>
+	  <input type="range" name="public_space_preference" min="1" max="5" value="3" step="1"
+       oninput="updatePreferenceText2(this.value)">
+      <span id="durationPrefValue">2-4 hours | 2-4小时</span>
+  </div>
+  
+  <div class="question">
+    <p>11. What are the frequencies you use nearby familiar areas or exploring popular areas in the city? | 在就近区域第三空间多还是探索城市热门区域</p>
+      <input type="range" name="near_explore_ratio" min="0" max="100" value="50" step="10"
+       oninput="updateAreaRatio(this.value)">
+  <div>
+  <span id="ratioText">50% Nearby | 50% Explore</span>
+  </div>
+
+  </div>
+
+  <div class="question">
+    <p>12. Preferred tools to find workspace (Drag to rank) | 喜欢使用的工具（拖拽排序）</p>
+    <ul class="multi-sortable" id="toolPreference">
+      <li>Map | 地图</li>
+      <li>Review sites | 点评网站</li>
+      <li>Friends recommendation | 朋友推荐</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <p>13. Factors considered when choosing a workspace (Drag to rank) | 选择办公地点考虑因素（拖拽排序）</p>
+    <ul class="multi-sortable" id="workspaceFactors">
+      <li>Noise level | 嘈杂度</li>
+      <li>WiFi quality | 网络质量</li>
+      <li>Power outlets | 插座完备</li>
+      <li>Private/semi-private space | 半独立空间</li>
+      <li>Open seating | 座位开阔</li>
+      <li>View & lighting | 外界视野/光线</li>
+      <li>Interior style/theme | 室内装潢特色</li>
+      <li>Spontaneous small events | 偶发小型活动</li>
+    </ul>
+  </div>
+
+  <div class="question">
+    <p>14. Preferred exploration mode | 更偏好哪种探索方式？</p>
+      <div class="slider-labels">
+        <span>Map | 地图</span>
+        <span>Filtered List | 条件筛选列表</span>
+      </div>
+      <input type="range" name="explore_mode" min="1" max="5" step="1" value="3" class="slider">
+      <div class="slider-value">Neutral | 中立</div>
+  </div>
+  
+  <div class="question">
+    <p>15. Issues encountered when searching for third spaces (Optional) | 过去搜索第三空间时遇到的问题或不便（可选）</p>
+    <textarea name="issues" rows="4"></textarea>
+  </div>
+
+  <div class="question">
+    <p>16. Preferred features in search apps for third spaces (Drag to rank) | 偏好功能（拖拽排序）</p>
+    <ul class="multi-sortable" id="featurePreference">
+      <li>Filter by area | 区域筛选</li>
+      <li>Filter by necessary facilities | 必要设施筛选</li>
+      <li>Show real-time availability | 实时空位显示</li>
+      <li>Map vs Ranked list | 地图自由探索 / 排行榜</li>
+      <li>Extra info (environment, events, reviews) | 额外信息（氛围、活动、评价）</li>
+      <li>Reservation function | 预约功能</li>
+    </ul>
+  </div>
+
+  <button type="submit">Submit | 提交</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-  // 优先级点击逻辑
-  document.querySelectorAll('.options.priority label').forEach(label => {
-    label.addEventListener('click', () => {
-      const prioSpan = label.querySelector('.prio');
-      if (prioSpan.textContent === '') {
-        const assigned = Array.from(document.querySelectorAll('.options.priority .prio'))
-          .map(s => parseInt(s.textContent))
-          .filter(n => !isNaN(n));
-        const next = assigned.length ? Math.max(...assigned) + 1 : 1;
-        prioSpan.textContent = next;
-      } else {
-        const removed = parseInt(prioSpan.textContent);
-        prioSpan.textContent = '';
-        document.querySelectorAll('.options.priority .prio').forEach(s => {
-          let n = parseInt(s.textContent);
-          if (!isNaN(n) && n > removed) s.textContent = n - 1;
-        });
-      }
-    });
+  ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
+    new Sortable(document.getElementById(id), {animation: 150});
   });
 
-  // CSV 导出
-  function exportCSV() {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    const questions = document.querySelectorAll('.question');
-    questions.forEach((q, index) => {
-      const title = q.querySelector('h2').innerText.replace(/,/g, '');
-      let row = [title];
-      const priorityLabels = q.querySelectorAll('.options.priority label');
-      if (priorityLabels.length) {
-        priorityLabels.forEach(l => {
-          const val = l.getAttribute('data-value');
-          const prio = l.querySelector('.prio').textContent || '';
-          row.push(`${val}:${prio}`);
-        });
+  document.getElementById('surveyForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = {};
+    this.querySelectorAll('input, select, textarea').forEach(el=>{
+      if(el.type==='checkbox'){
+        if(!formData[el.name]) formData[el.name]=[];
+        if(el.checked) formData[el.name].push(el.value);
+      } else {
+        formData[el.name] = el.value;
       }
-      csvContent += row.join(",") + "\n";
     });
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "third_space_survey.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
+      formData[id] = Array.from(document.getElementById(id).children).map(li=>li.textContent);
+    });
+    console.log('Survey data:', formData);
+    alert('Survey submitted! Check console for data.');
+    // TODO: Firebase 或其他后端集成保存数据
+  });
+</script>
+<script>
+  const prefLabels = {
+    1: "Strongly disagree | 完全不倾向",
+    2: "Disagree | 不倾向",
+    3: "Neutral | 一般",
+    4: "Agree | 倾向",
+    5: "Strongly agree | 非常倾向"
+  };
+  
+  function updatePreferenceText(val) {
+    document.getElementById('publicPrefValue').textContent = prefLabels[val];
   }
 </script>
-
+<script>
+  const pref2Labels = {
+    1: "Less than 1 hour | 1小时以内",
+    2: "1-2 hours | 1-2小时",
+    3: "2-4 hours | 2-4小时",
+    4: "4-6 hours | 4-6小时",
+    5: "More than 6 hours | 6小时以上"
+  };
+  
+  function updatePreferenceText2(val) {
+    document.getElementById('durationPrefValue').textContent = pref2Labels[val];
+  }
+</script>
+<script>
+  function updateAreaRatio(val) {
+    document.getElementById('ratioText').textContent =
+      `${val}% Nearby | ${100 - val}% Explore`;
+  }
+</script>
+<script>
+  document.querySelectorAll('input[type="range"][name="explore_mode"]').forEach(slider=>{
+  slider.addEventListener('input',()=>{
+    const labels = {
+      1: "Strongly prefer Map | 几乎只用地图",
+      2: "Prefer Map | 偏好地图",
+      3: "Neutral | 中立",
+      4: "Prefer List | 偏好列表",
+      5: "Strongly prefer List | 几乎只用列表"
+    };
+    slider.nextElementSibling.textContent = labels[slider.value];
+  });
+});
+</script>
 </body>
 </html>

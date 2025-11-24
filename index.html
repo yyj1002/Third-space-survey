@@ -104,9 +104,21 @@
 </style>
 </head>
 <body>
-<h1>Third Space Survey | 第三空间调研</h1>
-
-<form id="surveyForm">
+  <div class="survey-intro">
+    <h1>Third Space Survey | 第三空间调研</h1>
+    <p>
+      <strong>Thank you for joining!</strong><br>
+      This is a small survey for my personal product design portfolio.<br>
+      I’m researching how people choose <strong>study & work-friendly third places</strong> — such as cafés, coworking spaces, and study lounges outside of home and office.<br>
+      Your responses are anonymous and only used for design research.<br>
+      It takes about <strong>3 minutes</strong>. Let’s begin! ☕💻
+    </p>
+    <p>
+      <strong>感谢参与！</strong><br>
+      本问卷供我个人产品作品集研究使用，想了解大家如何选择 <strong>适合学习 / 办公的第三空间</strong> —— 如咖啡馆、书店自习区、联合办公空间等。<br>
+      问卷匿名，仅用于设计研究，大约 <strong>3 分钟</strong>即可完成。开始吧！ ☕💻
+    </p>
+  </div>
 
   <div class="question">
     <p>1. Age | 年龄</p>
@@ -152,7 +164,7 @@
   </div>
 
   <div class="question">
-    <p>6. Preference for working/studying in public spaces | 是否倾向在公共空间学习/办公</p>
+    <p>6. Do you enjoy working/studying in public spaces? | 是否喜欢在公共空间学习/办公</p>
     <input type="range" name="public_space_preference" min="1" max="5" value="3" step="1"
        oninput="updatePreferenceText(this.value)">
     <span id="publicPrefValue">Neutral | 一般</span>

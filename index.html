@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Third Space Survey | 第三空间调研</title>
@@ -272,13 +274,35 @@
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
+  // Firebase 配置
+  const firebaseConfig = {
+    apiKey: "AIzaSyAUbhRVvFc82ZwfwdT47aGAqEhjj08ePec",
+    authDomain: "survey-results-14ff1.firebaseapp.com",
+    projectId: "survey-results-14ff1",
+    storageBucket: "survey-results-14ff1.appspot.com",
+    messagingSenderId: "281290692850",
+    appId: "1:281290692850:web:e24051c3f8938495e3986b",
+    measurementId: "G-0SY38EVJY7"
+  };
+
+  // 初始化 Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // 初始化拖拽排序
   ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
     new Sortable(document.getElementById(id), {animation: 150});
   });
 
-  document.getElementById('surveyForm').addEventListener('submit', function(e){
+  // 表单提交
+  const form = document.getElementById('surveyForm');
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
+
     const formData = {};
     this.querySelectorAll('input, select, textarea').forEach(el=>{
       if(el.type==='checkbox'){
@@ -288,14 +312,23 @@
         formData[el.name] = el.value;
       }
     });
+
     ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
       formData[id] = Array.from(document.getElementById(id).children).map(li=>li.textContent);
     });
-    console.log('Survey data:', formData);
-    alert('Survey submitted! Check console for data.');
-    // TODO: Firebase 或其他后端集成保存数据
+
+    try {
+      await db.collection('surveyResults').add(formData);
+      // 显示提交成功界面
+      document.getElementById('surveyForm').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+    } catch (err) {
+      console.error('Error saving survey:', err);
+      alert('Failed to submit survey. Please try again.');
+    }
   });
 </script>
+
 <script>
   const prefLabels = {
     1: "Strongly disagree | 完全不倾向",
@@ -342,5 +375,6 @@
   });
 });
 </script>
+
 </body>
 </html>

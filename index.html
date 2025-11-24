@@ -289,18 +289,18 @@
   const firebaseConfig = {
     apiKey: "AIzaSyAUbhRVvFc82ZwfwdT47aGAqEhjj08ePec",
     projectId: "survey-results-14ff1",
-	authDomain: "survey-results-14ff1.firebaseapp.com",
+    authDomain: "survey-results-14ff1.firebaseapp.com",
     storageBucket: "survey-results-14ff1.appspot.com",
   };
 
   // 初始化Firebase
-  const app = firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
   // 初始化拖拽排序
-  ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
-    new Sortable(document.getElementById(id), {animation: 150});
-	formData[id] = Array.from(document.getElementById(id).children).map(li=>li.textContent);
+  const sortableFields = ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'];
+  sortableFields.forEach(id=>{
+    new Sortable(document.getElementById(id), { animation: 150 });
   });
 
   // 表单提交
@@ -318,9 +318,14 @@
       }
     });
 
+    // 收集所有拖拽题数据
+    sortableFields.forEach(id=>{
+      formData[id] = Array.from(document.getElementById(id).children)
+        .map(li=>li.textContent.trim());
+    });
+
     try {
       await db.collection('surveyResults').add(formData);
-      // 显示提交成功界面
       document.getElementById('surveyForm').style.display = 'none';
       document.getElementById('successMessage').style.display = 'block';
     } catch (err) {
@@ -329,6 +334,7 @@
     }
   });
 </script>
+
 
 <script>
   const prefLabels = {

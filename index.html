@@ -300,6 +300,7 @@
   // 初始化拖拽排序
   ['decisionNow','decisionFuture','toolPreference','workspaceFactors','featurePreference'].forEach(id=>{
     new Sortable(document.getElementById(id), {animation: 150});
+	formData[id] = Array.from(document.getElementById(id).children).map(li=>li.textContent);
   });
 
   // 表单提交
